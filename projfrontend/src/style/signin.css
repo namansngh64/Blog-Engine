@@ -1,0 +1,94 @@
+/*
+---------------------Theme-----------------------------
+#17252a  - blackish
+#2b7a78  - dark greenish
+#3aafa9  - light greenish
+#def2f1  - light whitish
+#feffff  - whitish
+*/
+body {
+  background-color: #3aafa9;
+}
+.signin-div {
+  /* background-color: #b0ff30; */
+  /* background-color: #1fd8ff; */
+  background-color: white;
+  position: absolute;
+  padding: 3%;
+  /* border: 0.1px #32fc5e solid; */
+  border-radius: 20px;
+  left: 35%;
+  width: 30%;
+  top: 22.5%;
+  height: 355px;
+  color: #10191d;
+  /* box-shadow: rgb(50, 252, 94) 0px 5px 15px; */
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  /* box-shadow: rgb(50, 252, 94) 0px 3px 8px; */
+  /* vertical-align: middle; */
+}
+.signin-bt {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 3px 8px;
+
+  background-color: black;
+  color: #feffff;
+  /* font-size: large; */
+  font-weight: 700;
+  transition: 0.2s ease all;
+}
+.signin-bt:disabled {
+  opacity: 1;
+}
+.signin-bt:hover {
+  border-color: #2b7a78;
+  background-color: #def2f1;
+  color: #2b7a78;
+}
+.signin-input {
+  background-color: white;
+  border: none;
+  border-bottom: 1px black solid;
+  /* border-radius: 0px; */
+  width: 100%;
+  /* margin: auto; */
+  box-shadow: none !important;
+  transition: 0.2s ease all;
+}
+.signin-input:focus {
+  background-color: white;
+  /* color: #1fd8ff; */
+  border-color: #2b7a78;
+  outline: none;
+  /* border-width: medium medium 2px; */
+}
+.my-floating-label {
+  position: absolute;
+  pointer-events: none;
+  top: 0px;
+  left: 10px;
+  transition: 0.2s ease all;
+}
+
+.mydiv {
+  position: relative;
+
+  padding: 10px;
+}
+.signin-input:focus ~ .my-floating-label,
+.signin-input:not(:placeholder-shown) ~ .my-floating-label {
+  top: -10px;
+  left: 10px;
+  /* color: white; */
+  font-size: 13px;
+  color: #2b7a78;
+  /* opacity: 1; */
+}
+.signin-link {
+  text-decoration: none;
+  /* font-weight: 400; */
+  font-weight: normal;
+  transition: 0.2s ease all;
+}
+.signin-link:hover {
+  color: #2b7a78;
+}
