@@ -101,7 +101,7 @@ exports.signup = (req, res) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    return res.status(422).json({
+    return res.json({
       error: errors.array()[0].msg
     });
   }
@@ -109,8 +109,8 @@ exports.signup = (req, res) => {
   const user = new User(req.body);
   user.save((err, user) => {
     if (err) {
-      return res.status(400).json({
-        err: "NOT able to save user in DB"
+      return res.json({
+        error: "User already exists"
       });
     }
     const otp = Math.floor(Math.random() * 100000);
@@ -138,6 +138,7 @@ exports.signup = (req, res) => {
 
 exports.verifyOtp = (req, res) => {
   const { otp } = req.body;
+  console.log(otp);
   if (!req.profile._id) {
     return res.json({
       error: "No User found"
@@ -169,7 +170,7 @@ exports.verifyOtp = (req, res) => {
         });
       }
       return res.json({
-        message: "Account activated successfully!!"
+        message: "Account activated successfully!! Signin to continue"
       });
     }
   );

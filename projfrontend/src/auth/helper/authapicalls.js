@@ -46,6 +46,46 @@ export const getToken = () => {
   // });
 };
 
+export const signup = (user) => {
+  return axios
+    .post(
+      `${API}/signup`,
+      {
+        email: user.email,
+        password: user.password,
+        name: user.name
+      },
+      {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        withCredentials: true
+      }
+    )
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => console.log(err));
+};
+
+export const verifyOtp = (user) => {
+  const { otpValue, userId } = user;
+  return axios
+    .post(
+      `${API}/verify/${userId}`,
+      {
+        otp: otpValue
+      },
+      {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        withCredentials: true
+      }
+    )
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => console.log(err));
+};
 export const signout = (next) => {
   return axios
     .get(`${API}/signout`)
