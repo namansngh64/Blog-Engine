@@ -2,20 +2,15 @@ import React from "react";
 import Nav from "./Nav";
 import "../style/base.css";
 
-const Base = ({
-  title = "My Title",
-  description = "My Description",
-  className = " text-black p-4",
-  children
-}) => {
+const Base = ({ className = " text-black p-2", children }) => {
   return (
     <div>
       <Nav />
       <div className="container-fluid">
-        <div className="jumbotron text-white text-center p-4">
+        {/* <div className="jumbotron text-white text-center p-4">
           <h2 className="display-4">{title}</h2>
           <p className="lead">{description}</p>
-        </div>
+        </div> */}
         <div className={className}>{children}</div>
       </div>
       <div className="fixed-bottom  ">

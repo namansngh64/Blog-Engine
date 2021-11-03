@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useHistory } from "react-router";
 import { toast, ToastContainer } from "react-toastify";
 import { signup, verifyOtp } from "../auth/helper/authapicalls";
+import Base from "../core/Base";
 
 import "../style/signup.css";
 
@@ -128,81 +129,82 @@ const Signup = () => {
   };
 
   return (
-    <div>
-      <ToastContainer
-        theme="dark"
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
-      {!otp && (
-        <div className=" signup-div">
-          <form>
-            <h2 className="signup-heading">Signup</h2>
-            <br />
-            <div className="form-group mydiv mb-4">
-              {/* <label htmlFor="i-username" className="form-label ">
+    <Base>
+      <div>
+        <ToastContainer
+          theme="dark"
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
+        {!otp && (
+          <div className=" signup-div">
+            <form>
+              <h2 className="signup-heading">Signup</h2>
+              <br />
+              <div className="form-group mydiv mb-4">
+                {/* <label htmlFor="i-username" className="form-label ">
               Username:{" "}
             </label> */}
 
-              <input
-                type="name"
-                required
-                className="signup-input"
-                placeholder=" "
-                value={name}
-                onChange={handleChange("name")}
-              />
-              <span className="my-floating-label">Name</span>
-            </div>
-            <div className="form-group mydiv mb-4">
-              {/* <label htmlFor="i-username" className="form-label ">
+                <input
+                  type="name"
+                  required
+                  className="signup-input"
+                  placeholder=" "
+                  value={name}
+                  onChange={handleChange("name")}
+                />
+                <span className="my-floating-label">Name</span>
+              </div>
+              <div className="form-group mydiv mb-4">
+                {/* <label htmlFor="i-username" className="form-label ">
               Username:{" "}
             </label> */}
 
-              <input
-                type="email"
-                required
-                className="signup-input"
-                placeholder=" "
-                value={email}
-                onChange={handleChange("email")}
-              />
-              <span className="my-floating-label">Email</span>
-            </div>
-            <div className="form-group mydiv mb-4">
-              {/* <label htmlFor="i-username" className="form-label ">
+                <input
+                  type="email"
+                  required
+                  className="signup-input"
+                  placeholder=" "
+                  value={email}
+                  onChange={handleChange("email")}
+                />
+                <span className="my-floating-label">Email</span>
+              </div>
+              <div className="form-group mydiv mb-4">
+                {/* <label htmlFor="i-username" className="form-label ">
               Username:{" "}
             </label> */}
 
-              <input
-                type="password"
-                required
-                className="signup-input"
-                placeholder=" "
-                value={password}
-                onChange={handleChange("password")}
-              />
-              <span className="my-floating-label">Password</span>
-            </div>
-            <div className="form-group mydiv mb-1">
-              <input
-                type="password"
-                required
-                className=" signup-input"
-                placeholder=" "
-                value={c_password}
-                onChange={handleChange("c_password")}
-              />
-              <span className="my-floating-label">Confirm Password</span>
-            </div>
-            {/* <div className="mx-2">
+                <input
+                  type="password"
+                  required
+                  className="signup-input"
+                  placeholder=" "
+                  value={password}
+                  onChange={handleChange("password")}
+                />
+                <span className="my-floating-label">Password</span>
+              </div>
+              <div className="form-group mydiv mb-1">
+                <input
+                  type="password"
+                  required
+                  className=" signup-input"
+                  placeholder=" "
+                  value={c_password}
+                  onChange={handleChange("c_password")}
+                />
+                <span className="my-floating-label">Confirm Password</span>
+              </div>
+              {/* <div className="mx-2">
             <input
               className="form-check-input mx-0"
               type="checkbox"
@@ -215,29 +217,32 @@ const Signup = () => {
               Stay Signed In
             </label>
           </div> */}
-            {/* <br /> */}
+              {/* <br /> */}
 
-            {!loading && (
-              <button className="btn signup-bt mt-3 mb-1" onClick={handleClick}>
-                Sign Up{" "}
-              </button>
-            )}
-            {loading && (
-              <button
-                className="btn signup-bt mt-3 mb-1"
-                disabled
-                // onClick={handleClick}
-              >
-                Loading{" "}
-                <span
-                  className="spinner-grow spinner-grow-sm"
-                  role="status"
-                  aria-hidden="true"
-                ></span>
-              </button>
-            )}
+              {!loading && (
+                <button
+                  className="btn signup-bt mt-3 mb-1"
+                  onClick={handleClick}
+                >
+                  Sign Up{" "}
+                </button>
+              )}
+              {loading && (
+                <button
+                  className="btn signup-bt mt-3 mb-1"
+                  disabled
+                  // onClick={handleClick}
+                >
+                  Loading{" "}
+                  <span
+                    className="spinner-grow spinner-grow-sm"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                </button>
+              )}
 
-            {/* <button className="btn signup-bt mt-3 mb-1" onClick={handleClick}>
+              {/* <button className="btn signup-bt mt-3 mb-1" onClick={handleClick}>
             Sign In{" "}
             {loading && (
               <span
@@ -247,68 +252,69 @@ const Signup = () => {
               ></span>
             )}
           </button> */}
-            {/* <div class="spinner-grow" role="status"> */}
+              {/* <div class="spinner-grow" role="status"> */}
 
-            {/* </div> */}
-            <br />
-          </form>
-          {JSON.stringify(values)}
-        </div>
-      )}
+              {/* </div> */}
+              <br />
+            </form>
+            {JSON.stringify(values)}
+          </div>
+        )}
 
-      {otp && (
-        <div className=" signup-div">
-          <form>
-            <h2 className="signup-heading">Signup</h2>
-            <br />
-            <div className="form-group mydiv mb-4">
-              {/* <label htmlFor="i-username" className="form-label ">
+        {otp && (
+          <div className=" signup-div">
+            <form>
+              <h2 className="signup-heading">Signup</h2>
+              <br />
+              <div className="form-group mydiv mb-4">
+                {/* <label htmlFor="i-username" className="form-label ">
             Username:{" "}
           </label> */}
 
-              <input
-                type="text"
-                required
-                className="signup-input"
-                placeholder=" "
-                value={otpValue}
-                onChange={handleChange("otpValue")}
-              />
-              <span className="my-floating-label">OTP</span>
-            </div>
-            {!loading && (
-              <button
-                className="btn signup-bt mt-3 mb-1 otp"
-                onClick={handleOtp}
-              >
-                Verify{" "}
-              </button>
-            )}
-            {loading && (
-              <button
-                className="btn signup-bt mt-3 mb-1"
-                disabled
-                // onClick={handleClick}
-              >
-                Loading{" "}
-                <span
-                  className="spinner-grow spinner-grow-sm"
-                  role="status"
-                  aria-hidden="true"
-                ></span>
-              </button>
-            )}
-          </form>
-        </div>
-      )}
-      {success && (
-        <div style={{ display: "none" }}>
-          {setTimeout(() => {
-            history.push("/signin");
-          }, 2000)}
-        </div>
-      )}
-    </div>
+                <input
+                  type="text"
+                  required
+                  className="signup-input"
+                  placeholder=" "
+                  value={otpValue}
+                  onChange={handleChange("otpValue")}
+                />
+                <span className="my-floating-label">OTP</span>
+              </div>
+              {!loading && (
+                <button
+                  className="btn signup-bt mt-3 mb-1 otp"
+                  onClick={handleOtp}
+                >
+                  Verify{" "}
+                </button>
+              )}
+              {loading && (
+                <button
+                  className="btn signup-bt mt-3 mb-1"
+                  disabled
+                  // onClick={handleClick}
+                >
+                  Loading{" "}
+                  <span
+                    className="spinner-grow spinner-grow-sm"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                </button>
+              )}
+            </form>
+          </div>
+        )}
+        {success && (
+          <div style={{ display: "none" }}>
+            {setTimeout(() => {
+              history.push("/signin");
+            }, 2000)}
+          </div>
+        )}
+      </div>
+    </Base>
   );
 };
 

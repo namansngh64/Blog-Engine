@@ -1,7 +1,7 @@
 .navSignin {
   color: greenyellow !important;
 }
-.navSignup {
-  color: orange !important;
-  padding-left: 0;
-}
+
+/* .navBackground:hover {
+  background-color: #feffff;
+} */

@@ -1,15 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, withRouter } from "react-router-dom";
+import { getToken } from "../auth/helper/authapicalls";
 import "../style/base.css";
 
 const Nav = ({ history }) => {
   const currentTab = (history, path) => {
     if (history.location.pathname === path) {
-      return { color: "#def2f1" };
+      return { color: "#feffff " };
     } else {
       // return { color: "#FFFFFF" };
     }
   };
+
+  const [token, setToken] = useState(undefined);
+  const [loading, setloading] = useState(false);
+  const myGetToken = () => {
+    getToken().then(async (data) => {
+      await setToken(data.data.token);
+      await setloading(true);
+    });
+    return token;
+  };
+  useEffect(() => {}, [token]);
 
   return (
     <nav className="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
@@ -30,34 +42,61 @@ const Nav = ({ history }) => {
         </button>
         <div className="collapse navbar-collapse" id="navbarSmall">
           <ul className="navbar-nav">
-            <li className="nav-item">
+            <li className="nav-item ">
               <Link
-                style={currentTab(history, "/")}
                 to="/"
                 className="nav-link"
+                style={currentTab(history, "/")}
               >
                 Home
               </Link>
             </li>
-            <li className="nav-item">
+            {myGetToken() === undefined && loading && (
+              <li className="nav-item ">
+                <Link to="/signin" className="navSignin nav-link">
+                  Signin
+                </Link>
+              </li>
+            )}
+            {myGetToken() != undefined && loading && (
+              <>
+                <li className="nav-item ">
+                  <Link to="/create/blog" className=" nav-link">
+                    Create Blog
+                  </Link>
+                </li>
+                <li className="nav-item ">
+                  <Link to="/manage" className=" nav-link">
+                    Manage Blog
+                  </Link>
+                </li>
+              </>
+            )}
+            {/* <li className="nav-item navBackground">
               <Link to="/signin" className="navSignin nav-link">
                 Signin
               </Link>
-            </li>
+            </li> */}
             {/* <li className="nav-item">
               <Link to="/signup" className="navSignup nav-link">
                 Signup
               </Link>
             </li> */}
           </ul>
-          <span className="d-flex nav-item ms-auto text-white">
-            <div className="nav-link disabled" style={{ paddingLeft: "0" }}>
-              New User?
-            </div>
-            <Link to="/signup" className="nav-link navSignup">
-              Signup
-            </Link>
-          </span>
+          {myGetToken() === undefined && loading && (
+            <span className="d-flex nav-item ms-auto text-white">
+              <Link to="/signup" className="btn btn-outline-warning btn-sm">
+                Create account
+              </Link>
+            </span>
+          )}
+          {myGetToken() !== undefined && loading && (
+            <span className="d-flex nav-item ms-auto text-white">
+              <Link to="/signout" className="btn btn-outline-danger btn-sm">
+                Signout
+              </Link>
+            </span>
+          )}
         </div>
       </div>
     </nav>
