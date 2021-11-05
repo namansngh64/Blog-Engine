@@ -88,7 +88,10 @@ export const verifyOtp = (user) => {
 };
 export const signout = (next) => {
   return axios
-    .get(`${API}/signout`)
+    .get(`${API}/signout`, {
+      Accept: "application/json",
+      withCredentials: true
+    })
     .then((res) => {
       next();
     })

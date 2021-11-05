@@ -93,18 +93,6 @@ const Signin = () => {
   return (
     <Base>
       <div>
-        <ToastContainer
-          theme="dark"
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-        />
         <div className=" signin-div">
           <form>
             <h2>Welcome Back</h2>

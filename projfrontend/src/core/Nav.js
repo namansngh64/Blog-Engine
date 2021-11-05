@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, withRouter } from "react-router-dom";
-import { getToken } from "../auth/helper/authapicalls";
+import { getToken, signout } from "../auth/helper/authapicalls";
 import "../style/base.css";
 
 const Nav = ({ history }) => {
@@ -92,9 +92,19 @@ const Nav = ({ history }) => {
           )}
           {myGetToken() !== undefined && loading && (
             <span className="d-flex nav-item ms-auto text-white">
-              <Link to="/signout" className="btn btn-outline-danger btn-sm">
-                Signout
-              </Link>
+              <input
+                type="button"
+                onClick={() => {
+                  signout(() => {
+                    history.push({
+                      pathname: "/",
+                      signout: "Signed Out Successfully"
+                    });
+                  });
+                }}
+                className="btn btn-outline-danger btn-sm"
+                value="Signout"
+              />
             </span>
           )}
         </div>
