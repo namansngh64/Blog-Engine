@@ -4,9 +4,10 @@ import Base from "./Base";
 
 const Home = (props) => {
   const signoutMessage = () => {
-    const message = (props.location && props.location.signout) || undefined;
-    console.log(message + " " + props.location.signout);
+    var message = (props.location && props.location.signout) || undefined;
+    // console.log(message + " " + props.location.signout);
     if (message !== undefined) {
+      console.log("HEHE");
       toast.success(message, {
         position: "top-right",
         autoClose: 5000,
@@ -16,13 +17,15 @@ const Home = (props) => {
         draggable: true,
         progress: undefined
       });
+      message = undefined;
     }
   };
   useEffect(() => {
-    signoutMessage();
+    signoutMessage(); //because signout toast not working in signin page
   }, []);
   return (
     <Base>
+      {signoutMessage()}
       <div>Hello</div>
     </Base>
   );

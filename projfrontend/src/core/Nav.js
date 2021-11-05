@@ -12,7 +12,7 @@ const Nav = ({ history }) => {
     }
   };
 
-  const [token, setToken] = useState(undefined);
+  const [token, setToken] = useState("");
   const [loading, setloading] = useState(false);
   const myGetToken = () => {
     getToken().then(async (data) => {
@@ -21,7 +21,7 @@ const Nav = ({ history }) => {
     });
     return token;
   };
-  useEffect(() => {}, [token]);
+  // useEffect(() => {}, []);
 
   return (
     <nav className="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
