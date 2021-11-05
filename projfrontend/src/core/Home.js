@@ -6,7 +6,7 @@ const Home = (props) => {
   const signoutMessage = () => {
     const message = (props.location && props.location.signout) || undefined;
     console.log(message + " " + props.location.signout);
-    if (message != undefined) {
+    if (message !== undefined) {
       toast.success(message, {
         position: "top-right",
         autoClose: 5000,
