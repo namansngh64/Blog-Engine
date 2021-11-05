@@ -11,6 +11,13 @@ const Nav = ({ history }) => {
       // return { color: "#FFFFFF" };
     }
   };
+  const addActiveClass = (history, path) => {
+    if (history.location.pathname === path) {
+      return "nav-item active navBackground m-1";
+    } else {
+      return "nav-item navBackground m-1";
+    }
+  };
 
   const [token, setToken] = useState("");
   const [loading, setloading] = useState(false);
@@ -42,7 +49,7 @@ const Nav = ({ history }) => {
         </button>
         <div className="collapse navbar-collapse" id="navbarSmall">
           <ul className="navbar-nav">
-            <li className="nav-item ">
+            <li className={addActiveClass(history, "/")}>
               <Link
                 to="/"
                 className="nav-link"
@@ -52,7 +59,7 @@ const Nav = ({ history }) => {
               </Link>
             </li>
             {myGetToken() === undefined && loading && (
-              <li className="nav-item ">
+              <li className={addActiveClass(history, "/signin")}>
                 <Link to="/signin" className="navSignin nav-link">
                   Signin
                 </Link>
@@ -60,12 +67,12 @@ const Nav = ({ history }) => {
             )}
             {myGetToken() != undefined && loading && (
               <>
-                <li className="nav-item ">
+                <li className={addActiveClass(history, "/create/blog")}>
                   <Link to="/create/blog" className=" nav-link">
                     Create Blog
                   </Link>
                 </li>
-                <li className="nav-item ">
+                <li className={addActiveClass(history, "/manage")}>
                   <Link to="/manage" className=" nav-link">
                     Manage Blog
                   </Link>
