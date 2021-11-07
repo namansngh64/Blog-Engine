@@ -13,9 +13,9 @@ const Nav = ({ history }) => {
   };
   const addActiveClass = (history, path) => {
     if (history.location.pathname === path) {
-      return "nav-item active navBackground m-1";
+      return "nav-item active navBackground mx-1 mb-1";
     } else {
-      return "nav-item navBackground m-1";
+      return "nav-item navBackground mx-1 mb-1";
     }
   };
 
