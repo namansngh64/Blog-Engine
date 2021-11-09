@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
+const fs = require("fs");
 const expressJwt = require("express-jwt");
 var nodemailer = require("nodemailer");
 const { validationResult } = require("express-validator");
@@ -128,6 +129,11 @@ exports.signup = (req, res) => {
     });
 
     sendVerifyMail(user.email, otp);
+
+    var dir = `../public/${user._id}/images`;
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
     res.json({
       name: user.name,
       email: user.email,
@@ -203,6 +209,7 @@ exports.genToken = (req, res) => {
     expiresIn: "120s"
   });
   return res.status(200).json({
-    token: token
+    token: token,
+    userId: refToken._id
   });
 };
