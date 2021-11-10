@@ -10,6 +10,7 @@ exports.getUserbyId = (req, res, next, id) => {
     req.profile = user;
     req.profile.salt = undefined;
     req.profile.encry_password = undefined;
+    // console.log(JSON.stringify(req.profile._id));
     next();
   });
 };
