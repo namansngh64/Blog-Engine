@@ -1,7 +1,7 @@
 const Blog = require("../models/blog");
 const formidable = require("formidable");
+const User = require("../models/user");
 const fs = require("fs");
-const path = require("path");
 const { validationResult } = require("express-validator");
 
 exports.createBlog = (req, res) => {
@@ -16,7 +16,7 @@ exports.createBlog = (req, res) => {
     ""
   )}/images/`;
   let form = new formidable.IncomingForm();
-  // form.keepExtensions = true;
+  form.keepExtensions = true;
   form.multiples = true;
   form.uploadDir = uploadFolder;
   let images = [];
@@ -31,18 +31,16 @@ exports.createBlog = (req, res) => {
 
   form.parse(req, (err, fields, files) => {
     if (err) {
-      return res.status(400).json({
+      return res.json({
         error: err
       });
     }
-    const { name, blogBody } = fields;
-    if (!name || !blogBody) {
-      return res.status(400).json({
+    const { title, blogBody } = fields;
+    if (!title || !blogBody) {
+      return res.json({
         error: "Please provide all the necessary details"
       });
     }
-
-    let blog = new Blog(fields);
 
     //handle file here
     // if (files.photo) {
@@ -68,24 +66,24 @@ exports.createBlog = (req, res) => {
 
       if (!isValid) {
         // throes error if file isn't valid
-        return res.status(400).json({
+        return res.json({
           status: "Fail",
-          message: "The file type is not a valid type"
+          error: "The file type is not a valid type"
         });
       }
       const newPath =
         uploadFolder + fileName + "." + file.mimetype.split("/").pop();
       try {
-        console.log(JSON.stringify(newPath));
-        console.log(JSON.stringify(file.filepath));
-        console.log(JSON.stringify(file.mimetype));
+        // console.log(JSON.stringify(newPath));
+        // console.log(JSON.stringify(file.filepath));
+        // console.log(JSON.stringify(file.mimetype));
         // renames the file in the directory
         fs.renameSync(file.filepath, newPath);
       } catch (error) {
         console.log(error);
       }
       images.push(newPath);
-      console.log(images);
+      // console.log(images);
       // try {
       //   // stores the fileName in the database
       //   const newFile = await File.create({
@@ -103,16 +101,33 @@ exports.createBlog = (req, res) => {
     } else {
       // Multiple files
     }
+    fields.images = images;
+    fields.author = req.profile;
+    let blog = new Blog(fields);
+    //save to the DB
+    blog.save((err, blog) => {
+      if (err) {
+        res.json({
+          error: err
+        });
+      }
+      console.log("Blog Created");
+      User.findOneAndUpdate(
+        { _id: req.profile._id },
+        { $push: { blogs: blog._id } },
+        { new: true },
+        (err, user) => {
+          if (err) {
+            return res.json({
+              error: err
+            });
+          }
+          console.log("User updated");
+          res.json({
+            message: "Blog Created Successfully!"
+          });
+        }
+      );
+    });
   });
-
-  //save to the DB
-  //   blog.save((err, blog) => {
-  //     if (err) {
-  //       res.status(400).json({
-  //         error: "Saving blog in DB failed"
-  //       });
-  //     }
-  //     res.json(blog);
-  // });
-  // });
 };

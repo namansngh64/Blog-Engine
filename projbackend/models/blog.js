@@ -14,7 +14,7 @@ var blogSchema = new mongoose.Schema(
       ref: "User",
       required: true
     },
-    body: {
+    blogBody: {
       type: String,
       required: true,
       trim: true
