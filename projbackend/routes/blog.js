@@ -1,11 +1,17 @@
 var express = require("express");
 var router = express.Router();
 const { check, body } = require("express-validator");
-const { createBlog } = require("../controllers/blog");
+const {
+  createBlog,
+  getBlogById,
+  getBlog,
+  getAllBlogs
+} = require("../controllers/blog");
 const { getUserbyId } = require("../controllers/user");
 
 //Params
 router.param("userId", getUserbyId);
+router.param("blogId", getBlogById);
 
 //Routes
 router.post(
@@ -18,4 +24,6 @@ router.post(
   createBlog
 );
 
+router.get("/blog/:blogId", getBlog);
+router.get("/blogs", getAllBlogs);
 module.exports = router;

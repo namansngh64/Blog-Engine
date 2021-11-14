@@ -131,3 +131,30 @@ exports.createBlog = (req, res) => {
     });
   });
 };
+
+exports.getBlogById = (req, res, next, id) => {
+  Blog.findById(id)
+    .populate("author", "_id name")
+    .exec((err, blog) => {
+      if (err || !blog) {
+        return res.json({ error: "No blog found" });
+      }
+      req.blog = blog;
+      next();
+    });
+};
+
+exports.getBlog = (req, res) => {
+  return res.json(req.blog);
+};
+
+exports.getAllBlogs = (req, res) => {
+  Blog.find()
+    .populate("author", "_id name")
+    .exec((err, blogs) => {
+      if (err || !blogs) {
+        return res.json({ error: "hehe" });
+      }
+      return res.json(blogs);
+    });
+};
