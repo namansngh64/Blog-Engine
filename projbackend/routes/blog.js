@@ -5,7 +5,8 @@ const {
   createBlog,
   getBlogById,
   getBlog,
-  getAllBlogs
+  getAllBlogs,
+  updateBlog
 } = require("../controllers/blog");
 const { getUserbyId } = require("../controllers/user");
 
@@ -22,6 +23,15 @@ router.post(
     //   body("password", "Password should be at least 3 char").isLength({ min: 3 })
   ],
   createBlog
+);
+router.post(
+  "/edit/blog/:blogId/:userId",
+  [
+    body("name", "Name should be at least 3 char").isLength({ min: 3 }),
+    body("blogBody", "Blog Body is required").isLength({ min: 3 })
+    //   body("password", "Password should be at least 3 char").isLength({ min: 3 })
+  ],
+  updateBlog
 );
 
 router.get("/blog/:blogId", getBlog);
