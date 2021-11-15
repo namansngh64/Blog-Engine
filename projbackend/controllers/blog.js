@@ -266,3 +266,15 @@ exports.deleteBlog = (req, res) => {
     return res.json(blog);
   });
 };
+
+exports.getUserBlogs = (req, res) => {
+  Blog.find({ author: req.profile })
+    .populate("author", "_id name")
+    .sort([["updatedAt", "desc"]])
+    .exec((err, blogs) => {
+      if (err || !blogs) {
+        return res.json({ error: "No blogs found" });
+      }
+      return res.json(blogs);
+    });
+};

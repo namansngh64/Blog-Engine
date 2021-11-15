@@ -7,7 +7,8 @@ const {
   getBlog,
   getAllBlogs,
   updateBlog,
-  deleteBlog
+  deleteBlog,
+  getUserBlogs
 } = require("../controllers/blog");
 const { getUserbyId } = require("../controllers/user");
 
@@ -37,6 +38,7 @@ router.put(
 
 router.get("/blog/:blogId", getBlog);
 router.get("/blogs", getAllBlogs);
+router.get("/blogs/:userId", getUserBlogs);
 
 router.delete("/delete/blog/:blogId/:userId", deleteBlog);
 module.exports = router;
