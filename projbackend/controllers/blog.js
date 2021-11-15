@@ -254,3 +254,15 @@ exports.updateBlog = (req, res) => {
     );
   });
 };
+exports.deleteBlog = (req, res) => {
+  if (JSON.stringify(req.blog.author._id) !== JSON.stringify(req.profile._id)) {
+    return res.json({ error: "You are not authorized to delete this blog!" });
+  }
+
+  Blog.findOneAndDelete({ id: req.blog._id }, (err, blog) => {
+    if (err) {
+      return res.json({ error: "Can't delete this blog!" });
+    }
+    return res.json(blog);
+  });
+};

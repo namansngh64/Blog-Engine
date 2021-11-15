@@ -9,6 +9,7 @@ const app = express();
 //Routes
 const authRoutes = require("./routes/auth");
 const blogRoutes = require("./routes/blog");
+const commentRoutes = require("./routes/comment");
 
 //Middlewares
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
@@ -35,3 +36,4 @@ mongoose
 //myApi
 app.use("/api", authRoutes);
 app.use("/api", blogRoutes);
+app.use("/api", commentRoutes);

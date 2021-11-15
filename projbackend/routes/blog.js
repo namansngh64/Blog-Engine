@@ -6,7 +6,8 @@ const {
   getBlogById,
   getBlog,
   getAllBlogs,
-  updateBlog
+  updateBlog,
+  deleteBlog
 } = require("../controllers/blog");
 const { getUserbyId } = require("../controllers/user");
 
@@ -24,7 +25,7 @@ router.post(
   ],
   createBlog
 );
-router.post(
+router.put(
   "/edit/blog/:blogId/:userId",
   [
     body("name", "Name should be at least 3 char").isLength({ min: 3 }),
@@ -36,4 +37,6 @@ router.post(
 
 router.get("/blog/:blogId", getBlog);
 router.get("/blogs", getAllBlogs);
+
+router.delete("/delete/blog/:blogId/:userId", deleteBlog);
 module.exports = router;
