@@ -24,6 +24,7 @@ exports.getBlogComments = (req, res) => {
   Comment.find({ blog: req.blog })
     .populate("user", "_id name")
     .populate("blog", "_id title")
+    .sort([["updatedAt", "desc"]])
     .exec((err, comments) => {
       if (err || !comments) {
         return res.json({ error: "No comments found" });
