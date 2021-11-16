@@ -20,6 +20,9 @@ exports.signin = (req, res) => {
         error: `No user found!`
       });
     }
+    if (user.activated === 0) {
+      return res.json({ error: "Account is not activated!" });
+    }
     if (user.authenticate(password)) {
       const token = jwt.sign({ _id: user._id }, process.env.SECRET, {
         expiresIn: "120s"
@@ -212,4 +215,15 @@ exports.genToken = (req, res) => {
     token: token,
     userId: refToken._id
   });
+};
+
+exports.isAuthenticated = (req, res, next) => {
+  let checker = req.profile && req.auth && req.profile._id == req.auth._id;
+  console.log(req.auth);
+  if (!checker) {
+    return res.json({
+      error: "ACCESS DENIED"
+    });
+  }
+  next();
 };

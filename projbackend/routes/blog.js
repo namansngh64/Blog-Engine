@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const { check, body } = require("express-validator");
+const { isSignedIn, isAuthenticated } = require("../controllers/auth");
 const {
   createBlog,
   getBlogById,
@@ -24,6 +25,8 @@ router.post(
     body("blogBody", "Blog Body is required").isLength({ min: 3 })
     //   body("password", "Password should be at least 3 char").isLength({ min: 3 })
   ],
+  isSignedIn,
+  isAuthenticated,
   createBlog
 );
 router.put(
@@ -33,12 +36,19 @@ router.put(
     body("blogBody", "Blog Body is required").isLength({ min: 3 })
     //   body("password", "Password should be at least 3 char").isLength({ min: 3 })
   ],
+  isSignedIn,
+  isAuthenticated,
   updateBlog
 );
 
 router.get("/blog/:blogId", getBlog);
 router.get("/blogs", getAllBlogs);
-router.get("/blogs/:userId", getUserBlogs);
+router.get("/blogs/:userId", isSignedIn, isAuthenticated, getUserBlogs);
 
-router.delete("/delete/blog/:blogId/:userId", deleteBlog);
+router.delete(
+  "/delete/blog/:blogId/:userId",
+  isSignedIn,
+  isAuthenticated,
+  deleteBlog
+);
 module.exports = router;
