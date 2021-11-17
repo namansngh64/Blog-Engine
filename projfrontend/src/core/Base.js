@@ -5,7 +5,7 @@ import { ToastContainer } from "react-toastify";
 
 const Base = ({ className = " text-black p-2", children }) => {
   return (
-    <div>
+    <div className="myBase">
       <Nav />
       <ToastContainer
         theme="dark"
