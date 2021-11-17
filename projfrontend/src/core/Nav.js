@@ -68,12 +68,20 @@ const Nav = ({ history }) => {
             {myGetToken() != undefined && loading && (
               <>
                 <li className={addActiveClass(history, "/create/blog")}>
-                  <Link to="/create/blog" className=" nav-link">
+                  <Link
+                    to="/create/blog"
+                    className=" nav-link"
+                    style={currentTab(history, "/create/blog")}
+                  >
                     Create Blog
                   </Link>
                 </li>
                 <li className={addActiveClass(history, "/manage")}>
-                  <Link to="/manage" className=" nav-link">
+                  <Link
+                    to="/manage"
+                    className=" nav-link"
+                    style={currentTab(history, "/manage")}
+                  >
                     Manage Blog
                   </Link>
                 </li>
@@ -105,7 +113,7 @@ const Nav = ({ history }) => {
                   signout(() => {
                     history.push({
                       pathname: "/",
-                      signout: "Signed Out Successfully"
+                      message: "Signed Out Successfully"
                     });
                   });
                 }}

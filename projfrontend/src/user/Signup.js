@@ -110,19 +110,23 @@ const Signup = () => {
         });
         setValues({ ...values, loading: false });
       } else {
-        toast.success(data.message, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined
-        });
+        // toast.success(data.message, {
+        //   position: "top-right",
+        //   autoClose: 5000,
+        //   hideProgressBar: false,
+        //   closeOnClick: true,
+        //   pauseOnHover: true,
+        //   draggable: true,
+        //   progress: undefined
+        // });
         setValues({
           ...values,
           loading: false,
           success: true
+        });
+        history.push({
+          pathname: "/signin",
+          message: "Account Verified! Signin to continue"
         });
       }
     });
@@ -294,13 +298,13 @@ const Signup = () => {
             </form>
           </div>
         )}
-        {success && (
+        {/* {success && (
           <div style={{ display: "none" }}>
             {setTimeout(() => {
               history.push("/signin");
             }, 2000)}
           </div>
-        )}
+        )} */}
       </div>
     </Base>
   );

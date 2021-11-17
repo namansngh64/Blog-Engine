@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "../style/signin.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -11,7 +11,7 @@ import {
 } from "../auth/helper/authapicalls";
 import Base from "../core/Base";
 
-const Signin = () => {
+const Signin = (props) => {
   const [values, setValues] = useState({
     email: "",
     password: "",
@@ -20,6 +20,24 @@ const Signin = () => {
     loading: false,
     success: false
   });
+  const message = () => {
+    var message = (props.location && props.location.message) || undefined;
+    // console.log(message + " " + props.location.signout);
+    if (message !== undefined) {
+      console.log("HEHE");
+      toast.success(message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      });
+      message = undefined;
+    }
+  };
+  let history = useHistory();
 
   const accToken = async () => {
     const a = await getToken().then((data) => {
@@ -30,6 +48,7 @@ const Signin = () => {
 
   useEffect(() => {
     //
+    message();
   }, []);
 
   const { email, password, checked, error, loading, success } = values;
@@ -73,16 +92,20 @@ const Signin = () => {
         });
         setValues({ ...values, loading: false });
       } else {
-        toast.success(data.user.name + " Signed In Successfully", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined
-        });
+        // toast.success(data.user.name + " Signed In Successfully", {
+        //   position: "top-right",
+        //   autoClose: 5000,
+        //   hideProgressBar: false,
+        //   closeOnClick: true,
+        //   pauseOnHover: true,
+        //   draggable: true,
+        //   progress: undefined
+        // });
         setValues({ ...values, loading: false, success: true });
+        history.push({
+          pathname: "/",
+          message: "Signed In Successfully!"
+        });
         // authenticate(data, () => {
         //   setValues({ ...values, loading: false, success: true });
         // });
@@ -93,6 +116,7 @@ const Signin = () => {
   return (
     <Base>
       <div>
+        {message()}
         <div className=" signin-div">
           <form>
             <h2>Welcome Back</h2>
