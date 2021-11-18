@@ -6,6 +6,7 @@ const Home = (props) => {
   const message = () => {
     var message = (props.location && props.location.message) || undefined;
     // console.log(message + " " + props.location.signout);
+
     if (message !== undefined) {
       console.log("HEHE");
       toast.success(message, {
@@ -38,7 +39,10 @@ const Home = (props) => {
   //   }
   // };
   useEffect(() => {
-    message(); //because signout toast not working in signin page
+    message();
+    if (props.location && props.location.message) {
+      props.location.message = undefined;
+    } //because signout toast not working in signin page
   }, []);
   return (
     <Base>

@@ -22,6 +22,7 @@ const Signin = (props) => {
   });
   const message = () => {
     var message = (props.location && props.location.message) || undefined;
+
     // console.log(message + " " + props.location.signout);
     if (message !== undefined) {
       console.log("HEHE");
@@ -49,6 +50,9 @@ const Signin = (props) => {
   useEffect(() => {
     //
     message();
+    if (props.location && props.location.message) {
+      props.location.message = undefined;
+    }
   }, []);
 
   const { email, password, checked, error, loading, success } = values;
