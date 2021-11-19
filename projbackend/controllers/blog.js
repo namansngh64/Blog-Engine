@@ -32,7 +32,7 @@ exports.createBlog = (req, res) => {
   form.parse(req, (err, fields, files) => {
     if (err) {
       return res.json({
-        error: err
+        error: "Oops! Something went wrong!"
       });
     }
     const { title, blogBody } = fields;
@@ -52,6 +52,7 @@ exports.createBlog = (req, res) => {
     // product.photo.data = fs.readFileSync(file.photo.path);
     // product.photo.contentType = file.photo.type;
     // Check if multiple files or a single file
+    console.log(files);
     if (files.myFile !== undefined) {
       if (!files.myFile.length) {
         //Single file

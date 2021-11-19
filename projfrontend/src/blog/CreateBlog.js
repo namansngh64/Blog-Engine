@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import Base from "../core/Base";
 import "../style/createBlog.css";
+import { createBlog } from "./helper/blogapicalls";
 
 const CreateBlog = () => {
   const [values, setValues] = useState({
@@ -8,13 +10,22 @@ const CreateBlog = () => {
     blogBody: "",
     myFile: [],
     imagePreviewUrl: [],
+    formData: new FormData(),
     error: "",
     loading: false,
     success: false
   });
 
-  const { title, blogBody, myFile, error, loading, success, imagePreviewUrl } =
-    values;
+  const {
+    title,
+    blogBody,
+    myFile,
+    error,
+    loading,
+    success,
+    imagePreviewUrl,
+    formData
+  } = values;
 
   const imgprev = () => {
     let imagePreview;
@@ -33,19 +44,6 @@ const CreateBlog = () => {
         ))}
       </div>
     );
-
-    // if (myUrl)
-    //   imagePreview = (
-    //     <img
-    //       src={myUrl}
-    //       className="img-thumbnail"
-    //       style={({ height: "200px" }, { width: "200px" })}
-    //     />
-    //   );
-    // else
-    //   imagePreview = (
-    //     <div className="h6">Please select an Image for Preview</div>
-    //   );
     return imagePreview;
   };
 
@@ -65,8 +63,59 @@ const CreateBlog = () => {
   };
 
   const handleChange = (name) => (event) => {
-    setValues((prevState) => {
-      return { ...prevState, [name]: event.target.value };
+    const value =
+      name === "myFile" ? event.target.files[0] : event.target.value;
+    if (name === "myFile") {
+      // console.log(value, name);
+      handleImage(event);
+      // formData.append(name, value);
+    } else {
+      setValues({ ...values, [name]: value });
+      formData.set(name, value);
+    }
+
+    // setValues((prevState) => {
+    //   return { ...prevState, [name]: event.target.value };
+    // });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    formData.set("title", title);
+
+    formData.set("blogBody", blogBody);
+
+    for (var i = 0; i < myFile.length; i++) {
+      formData.append("myFile", myFile[i]);
+    }
+    console.log(formData.getAll("myFile"));
+
+    // formData.append("myFile", myFile);
+
+    createBlog(formData).then((data) => {
+      // console.log(data);
+      if (data.error) {
+        toast.error(data.error, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined
+        });
+      } else {
+        toast.success(data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined
+        });
+      }
     });
   };
 
@@ -75,7 +124,7 @@ const CreateBlog = () => {
       <div className="row">
         <div className="col-md-12 heading">Create Blog</div>
       </div>
-      <form encType="multipart/form-data">
+      <form>
         <div className="row myTitle mt-4">
           <div className="col-md-2 mb-4 ">
             <center>
@@ -112,12 +161,24 @@ const CreateBlog = () => {
           <div className="col-md-12 mb-4">
             <label htmlFor="myFile" className="btn btn-sm myFileBtn">
               Upload pictures
-              <input id="myFile" multiple type="file" onChange={handleImage} />
+              <input
+                id="myFile"
+                type="file"
+                multiple
+                accept="image"
+                // onChange={(e) => {
+                //   // handleChange("photo");
+                //   handleImage(e);
+                // }}
+                onChange={handleChange("myFile")}
+              />
             </label>
           </div>
         </div>
         {imgprev()}
-        <button className="btn btn-success">Create</button>
+        <button className="btn btn-success" onClick={handleSubmit}>
+          Create
+        </button>
       </form>
     </Base>
   );
