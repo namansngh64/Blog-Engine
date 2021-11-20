@@ -20,6 +20,7 @@ exports.createBlog = (req, res) => {
   form.multiples = true;
   form.uploadDir = uploadFolder;
   let images = [];
+  let hehe = [];
   const isFileValid = (file) => {
     const type = file.mimetype.split("/").pop();
     const validTypes = ["jpg", "jpeg", "png"];
@@ -27,6 +28,60 @@ exports.createBlog = (req, res) => {
       return false;
     }
     return true;
+  };
+
+  form.on("fileBegin", function (name, file) {
+    const isValid = isFileValid(file);
+    const fileName = encodeURIComponent(file.newFilename.replace(/\s/g, "-"));
+
+    if (!isValid) {
+      // throes error if file isn't valid
+      return res.json({
+        status: "Fail",
+        error: "The file type is not a valid type"
+      });
+    }
+    const newPath =
+      uploadFolder + fileName + "." + file.mimetype.split("/").pop();
+
+    file.filepath = newPath;
+    images.push(newPath);
+  });
+
+  // form.on("file", function (field, file) {
+  //   //rename the incoming file to the file's name
+  //   // fs.renameSync(file.filepath, form.uploadDir + "/" + file.newFilename);
+  //   // console.log(field, file);
+  //   // hehe.push([field, file]);
+  //   // console.log(file);
+  // });
+
+  const handleImages = (file) => {
+    // checks if the file is valid
+    const isValid = isFileValid(file);
+
+    // creates a valid name by removing spaces
+    const fileName = encodeURIComponent(file.newFilename.replace(/\s/g, "-"));
+
+    if (!isValid) {
+      // throes error if file isn't valid
+      return res.json({
+        status: "Fail",
+        error: "The file type is not a valid type"
+      });
+    }
+    const newPath =
+      uploadFolder + fileName + "." + file.mimetype.split("/").pop();
+    try {
+      // console.log(JSON.stringify(newPath));
+      // console.log(JSON.stringify(file.filepath));
+      // console.log(JSON.stringify(file.mimetype));
+      // renames the file in the directory
+      fs.renameSync(file.filepath, newPath);
+    } catch (error) {
+      console.log(error);
+    }
+    images.push(newPath);
   };
 
   form.parse(req, (err, fields, files) => {
@@ -52,60 +107,92 @@ exports.createBlog = (req, res) => {
     // product.photo.data = fs.readFileSync(file.photo.path);
     // product.photo.contentType = file.photo.type;
     // Check if multiple files or a single file
-    console.log(files);
-    if (files.myFile !== undefined) {
-      if (!files.myFile.length) {
-        //Single file
+    // var i = 0;
 
-        const file = files.myFile;
-        // console.log(file);
+    // let filesArray = [];
 
-        // checks if the file is valid
-        const isValid = isFileValid(file);
+    // let json = JSON.parse(JSON.stringify(files));
+    // console.log(json);
 
-        // creates a valid name by removing spaces
-        const fileName = encodeURIComponent(
-          file.newFilename.replace(/\s/g, "-")
-        );
+    // let key = Object.keys(json);
+    // console.log(key);
 
-        if (!isValid) {
-          // throes error if file isn't valid
-          return res.json({
-            status: "Fail",
-            error: "The file type is not a valid type"
-          });
-        }
-        const newPath =
-          uploadFolder + fileName + "." + file.mimetype.split("/").pop();
-        try {
-          // console.log(JSON.stringify(newPath));
-          // console.log(JSON.stringify(file.filepath));
-          // console.log(JSON.stringify(file.mimetype));
-          // renames the file in the directory
-          fs.renameSync(file.filepath, newPath);
-        } catch (error) {
-          console.log(error);
-        }
-        images.push(newPath);
-        // console.log(images);
-        // try {
-        //   // stores the fileName in the database
-        //   const newFile = await File.create({
-        //     name: `files/${fileName}`,
-        //   });
-        //   return res.status(200).json({
-        //     status: "success",
-        //     message: "File created successfully!!",
-        //   });
-        // } catch (error) {
-        //   res.json({
-        //     error,
-        //   });
-        // }
-      } else {
-        // Multiple files
-      }
-    }
+    // json[key].forEach((j) => {
+    //   filesArray.push(j.path.split("\\")[1]);
+    // });
+
+    // console.log(filesArray);
+    // for (const file of Object.entries(files)) {
+    //   const a = `myFile.${i++}`;
+    //   // const fileName = encodeURIComponent(
+    //   //   files[a].newFilename.replace(/\s/g, "-")
+    //   // );
+    //   // const newPath =
+    //   //   uploadFolder + fileName + "." + files[a].mimetype.split("/").pop();
+    //   // files[a].filepath = newPath;
+    //   // fs.renameSync(files[a].filepath, newPath);
+    //   // console.log(files[a]);
+    //   // console.log(files[a]);
+    //   // console.log(files[a]);
+    //   // handleImages(files[a]);
+    // }
+    // console.log(hehe[0][1]);
+    // console.log(images);
+
+    // return res.json("bhehe");
+    // if (files.myFile !== undefined) {
+    //   if (!files.myFile.length) {
+    //     //Single file
+
+    //     const file = files.myFile;
+    //     // console.log(file);
+
+    //     // checks if the file is valid
+    //     const isValid = isFileValid(file);
+
+    //     // creates a valid name by removing spaces
+    //     const fileName = encodeURIComponent(
+    //       file.newFilename.replace(/\s/g, "-")
+    //     );
+
+    //     if (!isValid) {
+    //       // throes error if file isn't valid
+    //       return res.json({
+    //         status: "Fail",
+    //         error: "The file type is not a valid type"
+    //       });
+    //     }
+    //     const newPath =
+    //       uploadFolder + fileName + "." + file.mimetype.split("/").pop();
+    //     try {
+    //       // console.log(JSON.stringify(newPath));
+    //       // console.log(JSON.stringify(file.filepath));
+    //       // console.log(JSON.stringify(file.mimetype));
+    //       // renames the file in the directory
+    //       fs.renameSync(file.filepath, newPath);
+    //     } catch (error) {
+    //       console.log(error);
+    //     }
+    //     images.push(newPath);
+    //     // console.log(images);
+    //     // try {
+    //     //   // stores the fileName in the database
+    //     //   const newFile = await File.create({
+    //     //     name: `files/${fileName}`,
+    //     //   });
+    //     //   return res.status(200).json({
+    //     //     status: "success",
+    //     //     message: "File created successfully!!",
+    //     //   });
+    //     // } catch (error) {
+    //     //   res.json({
+    //     //     error,
+    //     //   });
+    //     // }
+    //   } else {
+    //     // Multiple files
+    //   }
+    // }
     fields.images = images;
     fields.author = req.profile;
     let blog = new Blog(fields);
