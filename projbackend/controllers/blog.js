@@ -56,33 +56,33 @@ exports.createBlog = (req, res) => {
   //   // console.log(file);
   // });
 
-  const handleImages = (file) => {
-    // checks if the file is valid
-    const isValid = isFileValid(file);
+  // const handleImages = (file) => {
+  //   // checks if the file is valid
+  //   const isValid = isFileValid(file);
 
-    // creates a valid name by removing spaces
-    const fileName = encodeURIComponent(file.newFilename.replace(/\s/g, "-"));
+  //   // creates a valid name by removing spaces
+  //   const fileName = encodeURIComponent(file.newFilename.replace(/\s/g, "-"));
 
-    if (!isValid) {
-      // throes error if file isn't valid
-      return res.json({
-        status: "Fail",
-        error: "The file type is not a valid type"
-      });
-    }
-    const newPath =
-      uploadFolder + fileName + "." + file.mimetype.split("/").pop();
-    try {
-      // console.log(JSON.stringify(newPath));
-      // console.log(JSON.stringify(file.filepath));
-      // console.log(JSON.stringify(file.mimetype));
-      // renames the file in the directory
-      fs.renameSync(file.filepath, newPath);
-    } catch (error) {
-      console.log(error);
-    }
-    images.push(newPath);
-  };
+  //   if (!isValid) {
+  //     // throes error if file isn't valid
+  //     return res.json({
+  //       status: "Fail",
+  //       error: "The file type is not a valid type"
+  //     });
+  //   }
+  //   const newPath =
+  //     uploadFolder + fileName + "." + file.mimetype.split("/").pop();
+  //   try {
+  //     // console.log(JSON.stringify(newPath));
+  //     // console.log(JSON.stringify(file.filepath));
+  //     // console.log(JSON.stringify(file.mimetype));
+  //     // renames the file in the directory
+  //     fs.renameSync(file.filepath, newPath);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  //   images.push(newPath);
+  // };
 
   form.parse(req, (err, fields, files) => {
     if (err) {

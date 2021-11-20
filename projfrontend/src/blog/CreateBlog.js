@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router";
 import { toast } from "react-toastify";
 import Base from "../core/Base";
 import "../style/createBlog.css";
@@ -15,6 +16,8 @@ const CreateBlog = () => {
     loading: false,
     success: false
   });
+
+  let history = useHistory();
 
   const {
     title,
@@ -68,7 +71,7 @@ const CreateBlog = () => {
     if (name === "myFile") {
       // console.log(value, name);
       handleImage(event);
-      // formData.append(name, value);
+      formData.append(name, value);
     } else {
       setValues({ ...values, [name]: value });
       formData.set(name, value);
@@ -81,15 +84,18 @@ const CreateBlog = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setValues((prevState) => {
+      return { ...prevState, error: "", loading: true };
+    });
 
     formData.set("title", title);
 
     formData.set("blogBody", blogBody);
-
-    for (var i = 0; i < myFile.length; i++) {
-      formData.append("myFile", myFile[i]);
-    }
-    console.log(formData.getAll("myFile"));
+    // formData.set("myFile", "");
+    // for (var i = 0; i < myFile.length; i++) {
+    //   formData.append("myFile", myFile[i]);
+    // }
+    // console.log(formData.getAll("myFile"));
 
     // formData.append("myFile", myFile);
 
@@ -105,6 +111,7 @@ const CreateBlog = () => {
           draggable: true,
           progress: undefined
         });
+        setValues({ ...values, error: data.error, loading: false });
       } else {
         toast.success(data.message, {
           position: "top-right",
@@ -114,6 +121,16 @@ const CreateBlog = () => {
           pauseOnHover: true,
           draggable: true,
           progress: undefined
+        });
+        setValues({
+          ...values,
+          error: "",
+          success: true,
+          loading: false
+        });
+        history.push({
+          pathname: "/manage",
+          message: "Blog Created Successfully"
         });
       }
     });
