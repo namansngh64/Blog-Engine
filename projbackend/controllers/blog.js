@@ -20,7 +20,7 @@ exports.createBlog = (req, res) => {
   form.multiples = true;
   form.uploadDir = uploadFolder;
   let images = [];
-  let hehe = [];
+  let hehe = 0;
   const isFileValid = (file) => {
     const type = file.mimetype.split("/").pop();
     const validTypes = ["jpg", "jpeg", "png"];
@@ -29,6 +29,18 @@ exports.createBlog = (req, res) => {
     }
     return true;
   };
+
+  // form.on("field", function (name, field) {
+  //   if (field === "") {
+  //     console.log(field);
+  //     hehe = 1;
+  //   }
+  // });
+  // if (hehe !== 2) {
+  //   return res.json({
+  //     error: "Please provide all the necessary details!"
+  //   });
+  // }
 
   form.on("fileBegin", function (name, file) {
     const isValid = isFileValid(file);

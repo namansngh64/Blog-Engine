@@ -51,18 +51,44 @@ const CreateBlog = () => {
   };
 
   const handleImage = (e) => {
-    let reader = new FileReader();
-    let file = e.target.files[0];
-    console.log(reader);
-    reader.onloadend = () => {
-      setValues({
-        ...values,
-        myFile: [...myFile, file],
-        imagePreviewUrl: [...imagePreviewUrl, reader.result]
-      });
-    };
+    let files = [];
+    let setMyFile = [];
+    for (let file of e.target.files) {
+      formData.append("myFile", file);
+      setMyFile.push(file);
+      files.push(URL.createObjectURL(file));
+    }
+    setValues({
+      ...values,
+      myFile: [...myFile, ...setMyFile],
+      imagePreviewUrl: [...imagePreviewUrl, ...files]
+    });
+    // let reader = new FileReader();
+    // const files = e.target.files;
+    // for (let i = 0; i < files.length; i++) {
+    //   console.log(reader.result);
+    //   formData.append("myFile", files[i]);
+    //   reader.onloadend = () => {
+    //     setValues({
+    //       ...values,
+    //       myFile: [...myFile, files[i]],
+    //       imagePreviewUrl: [...imagePreviewUrl, reader.result]
+    //     });
+    //   };
+    //   if (files[i] !== undefined) reader.readAsDataURL(files[i]);
+    // }
 
-    if (file !== undefined) reader.readAsDataURL(file);
+    // let reader = new FileReader();
+    // let file = e.target.files[0];
+    // console.log(reader);
+    // reader.onloadend = () => {
+    //   setValues({
+    //     ...values,
+    //     myFile: [...myFile, file],
+    //     imagePreviewUrl: [...imagePreviewUrl, reader.result]
+    //   });
+    // };
+    // if (file !== undefined) reader.readAsDataURL(file);
   };
 
   const handleChange = (name) => (event) => {
@@ -71,7 +97,6 @@ const CreateBlog = () => {
     if (name === "myFile") {
       // console.log(value, name);
       handleImage(event);
-      formData.append(name, value);
     } else {
       setValues({ ...values, [name]: value });
       formData.set(name, value);
@@ -87,6 +112,25 @@ const CreateBlog = () => {
     setValues((prevState) => {
       return { ...prevState, error: "", loading: true };
     });
+    console.log(myFile);
+    console.log(formData.getAll("myFile"));
+    if (!title || !blogBody) {
+      toast.error("Please provide all the necessary details!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      });
+      setValues({
+        ...values,
+        error: "Please provide all the necessary details!",
+        loading: false
+      });
+      return;
+    }
 
     formData.set("title", title);
 
@@ -95,7 +139,6 @@ const CreateBlog = () => {
     // for (var i = 0; i < myFile.length; i++) {
     //   formData.append("myFile", myFile[i]);
     // }
-    // console.log(formData.getAll("myFile"));
 
     // formData.append("myFile", myFile);
 
@@ -181,8 +224,8 @@ const CreateBlog = () => {
               <input
                 id="myFile"
                 type="file"
+                accept="image/jpeg , image/jpg , image/png"
                 multiple
-                accept="image"
                 // onChange={(e) => {
                 //   // handleChange("photo");
                 //   handleImage(e);
