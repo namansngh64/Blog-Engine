@@ -33,3 +33,18 @@ input[type="file"] {
   background-color: #def2f1;
   color: #2b7a78;
 }
+.imgContainer {
+  position: relative;
+  padding: 4px;
+}
+.imgContainer img {
+  width: 100%;
+  height: 100%;
+}
+.myDelBtn {
+  position: absolute;
+  top: 0px;
+  right: 5px;
+  width: 15px;
+  padding: 0px;
+}

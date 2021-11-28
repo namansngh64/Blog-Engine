@@ -33,16 +33,32 @@ const CreateBlog = () => {
   const imgprev = () => {
     let imagePreview;
     // console.log(myUrl);
-    var i = 0;
+    // var i = 0;
     imagePreview = (
       <div className="row mb-4">
-        {imagePreviewUrl.map((imgsrc) => (
-          <div key={i++} className="col-md-4">
+        {imagePreviewUrl.map((imgsrc, key) => (
+          <div
+            key={key}
+            className="col-md-4 imgContainer"
+            // style={{position:"relative"},{ display: "inline-block" }}
+          >
             <img
               src={imgsrc}
-              className="img-fluid"
+              // className="img-fluid"
               // style={({ height: "200px" }, { width: "200px" })}
             />
+            <br />
+            <button
+              className="mt-1 btn btn-sm btn-danger myDelBtn"
+              // style={
+              //   ({ position: "absolute" }, { top: "0px" }, { right: "0px" })
+              // }
+              onClick={(e) => {
+                deleteImage(e, key);
+              }}
+            >
+              X
+            </button>
           </div>
         ))}
       </div>
@@ -50,11 +66,27 @@ const CreateBlog = () => {
     return imagePreview;
   };
 
+  const deleteImage = (e, key) => {
+    e.preventDefault();
+    let myImgArr = imagePreviewUrl;
+    let myFileArr = myFile;
+    myImgArr.splice(key, 1);
+    myFileArr.splice(key, 1);
+    setValues({
+      ...values,
+      myFile: [...myFileArr],
+      imagePreviewUrl: [...myImgArr]
+    });
+    // formData.delete("myFile");
+
+    // console.log(myFile);
+  };
+
   const handleImage = (e) => {
     let files = [];
     let setMyFile = [];
     for (let file of e.target.files) {
-      formData.append("myFile", file);
+      // formData.append("myFile", file);
       setMyFile.push(file);
       files.push(URL.createObjectURL(file));
     }
@@ -112,8 +144,12 @@ const CreateBlog = () => {
     setValues((prevState) => {
       return { ...prevState, error: "", loading: true };
     });
-    console.log(myFile);
-    console.log(formData.getAll("myFile"));
+    formData.delete("myFile");
+    myFile.map((myfile) => {
+      formData.append("myFile", myfile);
+    });
+    // console.log(myFile);
+    // console.log(formData.getAll("myFile"));
     if (!title || !blogBody) {
       toast.error("Please provide all the necessary details!", {
         position: "top-right",
