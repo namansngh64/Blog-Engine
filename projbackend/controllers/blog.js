@@ -11,10 +11,9 @@ exports.createBlog = (req, res) => {
   //     error: errors.array()[0].msg
   //   });
   // }
-  const uploadFolder = `../public/${JSON.stringify(req.profile._id).replace(
-    /['"]+/g,
-    ""
-  )}/images/`;
+  const uploadFolder = `../projfrontend/public/images/${JSON.stringify(
+    req.profile._id
+  ).replace(/['"]+/g, "")}/`;
   let form = new formidable.IncomingForm();
   form.keepExtensions = true;
   form.multiples = true;
@@ -270,10 +269,19 @@ exports.updateBlog = (req, res) => {
     return res.json({ error: "You are not authorized to edit this blog!" });
   }
 
-  const uploadFolder = `../public/${JSON.stringify(req.profile._id).replace(
-    /['"]+/g,
-    ""
-  )}/images/`;
+  let removeImgs = req.blog.images;
+  removeImgs.map((img) => {
+    fs.stat(img, (err, stats) => {
+      if (err) {
+        return;
+      }
+      fs.unlinkSync(img);
+    });
+  });
+
+  const uploadFolder = `../projfrontend/public/images/${JSON.stringify(
+    req.profile._id
+  ).replace(/['"]+/g, "")}/`;
 
   let form = new formidable.IncomingForm();
   form.keepExtensions = true;
@@ -289,6 +297,24 @@ exports.updateBlog = (req, res) => {
     return true;
   };
 
+  form.on("fileBegin", function (name, file) {
+    const isValid = isFileValid(file);
+    const fileName = encodeURIComponent(file.newFilename.replace(/\s/g, "-"));
+
+    if (!isValid) {
+      // throes error if file isn't valid
+      return res.json({
+        status: "Fail",
+        error: "The file type is not a valid type"
+      });
+    }
+    const newPath =
+      uploadFolder + fileName + "." + file.mimetype.split("/").pop();
+
+    file.filepath = newPath;
+    images.push(newPath);
+  });
+
   form.parse(req, (err, fields, files) => {
     if (err) {
       return res.json({
@@ -302,47 +328,48 @@ exports.updateBlog = (req, res) => {
       });
     }
     // console.log(files.myFile);
-    if (files.myFile !== undefined) {
-      if (!files.myFile.length) {
-        //Single file
+    // if (files.myFile !== undefined) {
+    //   if (!files.myFile.length) {
+    //     //Single file
 
-        const file = files.myFile;
-        // console.log(file);
+    //     const file = files.myFile;
+    //     // console.log(file);
 
-        // checks if the file is valid
-        const isValid = isFileValid(file);
+    //     // checks if the file is valid
+    //     const isValid = isFileValid(file);
 
-        // creates a valid name by removing spaces
-        const fileName = encodeURIComponent(
-          file.newFilename.replace(/\s/g, "-")
-        );
+    //     // creates a valid name by removing spaces
+    //     const fileName = encodeURIComponent(
+    //       file.newFilename.replace(/\s/g, "-")
+    //     );
 
-        if (!isValid) {
-          // throes error if file isn't valid
-          return res.json({
-            status: "Fail",
-            error: "The file type is not a valid type"
-          });
-        }
-        const newPath =
-          uploadFolder + fileName + "." + file.mimetype.split("/").pop();
-        try {
-          // console.log(JSON.stringify(newPath));
-          // console.log(JSON.stringify(file.filepath));
-          // console.log(JSON.stringify(file.mimetype));
-          // renames the file in the directory
-          fs.renameSync(file.filepath, newPath);
-        } catch (error) {
-          console.log(error);
-        }
-        images.push(newPath);
-        fields.images = images;
-      } else {
-        // Multiple files
-        console.log("inside");
-      }
-    }
+    //     if (!isValid) {
+    //       // throes error if file isn't valid
+    //       return res.json({
+    //         status: "Fail",
+    //         error: "The file type is not a valid type"
+    //       });
+    //     }
+    //     const newPath =
+    //       uploadFolder + fileName + "." + file.mimetype.split("/").pop();
+    //     try {
+    //       // console.log(JSON.stringify(newPath));
+    //       // console.log(JSON.stringify(file.filepath));
+    //       // console.log(JSON.stringify(file.mimetype));
+    //       // renames the file in the directory
+    //       fs.renameSync(file.filepath, newPath);
+    //     } catch (error) {
+    //       console.log(error);
+    //     }
+    //     images.push(newPath);
+    //     fields.images = images;
+    //   } else {
+    //     // Multiple files
+    //     console.log("inside");
+    //   }
+    // }
 
+    fields.images = images;
     fields.author = req.profile;
     //save to db
     Blog.findOneAndUpdate(

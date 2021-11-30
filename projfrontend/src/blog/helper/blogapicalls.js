@@ -24,3 +24,25 @@ export const createBlog = async (blog) => {
     })
     .catch((err) => console.log(err));
 };
+export const editBlog = async (blog) => {
+  const user = await getToken();
+  console.log(user.data.token);
+  console.log(blog);
+  return axios
+    .post(
+      `${API}/edit/blog/${blog.blogId}/${user.data.userId}`,
+
+      blog,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${user.data.token}`
+        }
+        //   withCredentials: true
+      }
+    )
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => console.log(err));
+};

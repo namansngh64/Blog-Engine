@@ -133,7 +133,7 @@ exports.signup = (req, res) => {
 
     sendVerifyMail(user.email, otp);
 
-    var dir = `../public/${user._id}/images`;
+    var dir = `../projfrontend/public/images/${user._id}/`;
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
