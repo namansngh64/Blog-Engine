@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { toast } from "react-toastify";
 import Base from "../core/Base";
 import "../style/editBlog.css";
-import { editBlog } from "./helper/blogapicalls";
-import { API } from "../backend";
+import { editBlog, getBlogById } from "./helper/blogapicalls";
 
-const EditBlog = () => {
+const EditBlog = ({ match }) => {
   const [values, setValues] = useState({
     title: "",
     blogBody: "",
@@ -30,6 +29,36 @@ const EditBlog = () => {
     imagePreviewUrl,
     formData
   } = values;
+
+  const preload = (blogId) => {
+    getBlogById(blogId).then((data) => {
+      if (data.error) {
+        history.push({
+          pathname: "/",
+          message: data.error
+        });
+      } else {
+        let previmages = [];
+        data.images.map((image) => {
+          previmages.push(window.location.origin + image.substring(22));
+          <img
+            style={{ display: "none" }}
+            src={window.location.origin + image.substring(22)}
+          />;
+        });
+        setValues({
+          ...values,
+          title: data.title,
+          blogBody: data.blogBody,
+          imagePreviewUrl: [...previmages]
+        });
+      }
+    });
+  };
+
+  useEffect(() => {
+    preload(match.params.blogId);
+  }, []);
 
   const imgprev = () => {
     let imagePreview;
@@ -228,7 +257,7 @@ const EditBlog = () => {
           </div>
         </div>
         {imgprev()}
-        <img src="/images/h.jpeg" />
+        <img src="/images/616332e79f1df4dbdd213d58/8fd25aa98fa03a5136846bf05.jpeg" />
         <button className="btn btn-success" onClick={handleSubmit}>
           Save
         </button>

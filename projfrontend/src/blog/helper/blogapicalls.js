@@ -46,3 +46,12 @@ export const editBlog = async (blog) => {
     })
     .catch((err) => console.log(err));
 };
+
+export const getBlogById = (blogId) => {
+  return axios
+    .get(`${API}/blog/${blogId}`)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => console.log(err));
+};
