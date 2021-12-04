@@ -11,6 +11,8 @@ const EditBlog = ({ match }) => {
     blogBody: "",
     myFile: [],
     imagePreviewUrl: [],
+    prevImagePreviewUrl: [],
+    remImgs: [],
     formData: new FormData(),
     error: "",
     loading: false,
@@ -27,6 +29,8 @@ const EditBlog = ({ match }) => {
     loading,
     success,
     imagePreviewUrl,
+    prevImagePreviewUrl,
+    remImgs,
     formData
   } = values;
 
@@ -40,17 +44,13 @@ const EditBlog = ({ match }) => {
       } else {
         let previmages = [];
         data.images.map((image) => {
-          previmages.push(window.location.origin + image.substring(22));
-          <img
-            style={{ display: "none" }}
-            src={window.location.origin + image.substring(22)}
-          />;
+          previmages.push(image);
         });
         setValues({
           ...values,
           title: data.title,
           blogBody: data.blogBody,
-          imagePreviewUrl: [...previmages]
+          prevImagePreviewUrl: [...previmages]
         });
       }
     });
@@ -60,10 +60,44 @@ const EditBlog = ({ match }) => {
     preload(match.params.blogId);
   }, []);
 
+  const prevImg = () => {
+    let imagePreview;
+    imagePreview = (
+      <>
+        {prevImagePreviewUrl.map((imgsrc, key) => (
+          <div
+            key={key}
+            className="col-md-4 imgContainer"
+            // style={{position:"relative"},{ display: "inline-block" }}
+          >
+            <img
+              src={window.location.origin + imgsrc.substring(22)}
+              // className="img-fluid"
+              // style={({ height: "200px" }, { width: "200px" })}
+            />
+            <br />
+            <button
+              className="mt-1 btn btn-sm btn-danger myDelBtn"
+              // style={
+              //   ({ position: "absolute" }, { top: "0px" }, { right: "0px" })
+              // }
+              onClick={(e) => {
+                prevDeleteImage(e, key, imgsrc);
+              }}
+            >
+              X
+            </button>
+          </div>
+        ))}
+      </>
+    );
+    return imagePreview;
+  };
+
   const imgprev = () => {
     let imagePreview;
     imagePreview = (
-      <div className="row mb-4">
+      <>
         {imagePreviewUrl.map((imgsrc, key) => (
           <div
             key={key}
@@ -89,9 +123,20 @@ const EditBlog = ({ match }) => {
             </button>
           </div>
         ))}
-      </div>
+      </>
     );
     return imagePreview;
+  };
+
+  const prevDeleteImage = (e, key, imgsrc) => {
+    e.preventDefault();
+    let myImgArr = prevImagePreviewUrl;
+    myImgArr.splice(key, 1);
+    setValues({
+      ...values,
+      remImgs: [...remImgs, imgsrc],
+      prevImagePreviewUrl: [...myImgArr]
+    });
   };
 
   const deleteImage = (e, key) => {
@@ -142,6 +187,11 @@ const EditBlog = ({ match }) => {
     myFile.map((myfile) => {
       formData.append("myFile", myfile);
     });
+    formData.delete("remImgs");
+    remImgs.map((myfile) => {
+      formData.append("remImgs", myfile);
+    });
+    console.log(formData.getAll("remImgs"));
     if (!title || !blogBody) {
       toast.error("Please provide all the necessary details!", {
         position: "top-right",
@@ -163,7 +213,7 @@ const EditBlog = ({ match }) => {
     formData.set("title", title);
 
     formData.set("blogBody", blogBody);
-    editBlog(formData).then((data) => {
+    editBlog(formData, match.params.blogId).then((data) => {
       // console.log(data);
       if (data.error) {
         toast.error(data.error, {
@@ -194,7 +244,7 @@ const EditBlog = ({ match }) => {
         });
         history.push({
           pathname: "/manage",
-          message: "Blog Created Successfully"
+          message: "Blog Updated Successfully"
         });
       }
     });
@@ -256,8 +306,12 @@ const EditBlog = ({ match }) => {
             </label>
           </div>
         </div>
-        {imgprev()}
-        <img src="/images/616332e79f1df4dbdd213d58/8fd25aa98fa03a5136846bf05.jpeg" />
+        <div className="row mb-4">
+          {prevImg()}
+          {imgprev()}
+        </div>
+
+        {/* <img src="/images/616332e79f1df4dbdd213d58/8fd25aa98fa03a5136846bf05.jpeg" /> */}
         <button className="btn btn-success" onClick={handleSubmit}>
           Save
         </button>

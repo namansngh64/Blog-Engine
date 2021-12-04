@@ -268,17 +268,6 @@ exports.updateBlog = (req, res) => {
   if (JSON.stringify(req.blog.author._id) !== JSON.stringify(req.profile._id)) {
     return res.json({ error: "You are not authorized to edit this blog!" });
   }
-
-  let removeImgs = req.blog.images;
-  removeImgs.map((img) => {
-    fs.stat(img, (err, stats) => {
-      if (err) {
-        return;
-      }
-      fs.unlinkSync(img);
-    });
-  });
-
   const uploadFolder = `../projfrontend/public/images/${JSON.stringify(
     req.profile._id
   ).replace(/['"]+/g, "")}/`;
@@ -288,6 +277,7 @@ exports.updateBlog = (req, res) => {
   form.multiples = true;
   form.uploadDir = uploadFolder;
   let images = [];
+  let remImgs = [];
   const isFileValid = (file) => {
     const type = file.mimetype.split("/").pop();
     const validTypes = ["jpg", "jpeg", "png"];
@@ -315,12 +305,19 @@ exports.updateBlog = (req, res) => {
     images.push(newPath);
   });
 
+  form.on("field", function (name, field) {
+    if (name == "remImgs") {
+      remImgs.push(field);
+    }
+  });
+
   form.parse(req, (err, fields, files) => {
     if (err) {
       return res.json({
         error: err
       });
     }
+
     const { title, blogBody } = fields;
     if (!title || !blogBody) {
       return res.json({
@@ -369,8 +366,25 @@ exports.updateBlog = (req, res) => {
     //   }
     // }
 
+    let prevImgs = req.blog.images;
+    if (remImgs.length !== 0) {
+      remImgs.map((img) => {
+        var index = prevImgs.indexOf(img);
+        if (index !== -1) {
+          prevImgs.splice(index, 1);
+        }
+        fs.stat(img, (err, stats) => {
+          if (err) {
+            return;
+          }
+          fs.unlinkSync(img);
+        });
+      });
+    }
+    images.push(...prevImgs);
     fields.images = images;
     fields.author = req.profile;
+
     //save to db
     Blog.findOneAndUpdate(
       { _id: req.blog._id },

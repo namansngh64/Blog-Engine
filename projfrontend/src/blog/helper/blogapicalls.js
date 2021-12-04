@@ -24,13 +24,13 @@ export const createBlog = async (blog) => {
     })
     .catch((err) => console.log(err));
 };
-export const editBlog = async (blog) => {
+export const editBlog = async (blog, blogId) => {
   const user = await getToken();
   console.log(user.data.token);
   console.log(blog);
   return axios
-    .post(
-      `${API}/edit/blog/${blog.blogId}/${user.data.userId}`,
+    .put(
+      `${API}/edit/blog/${blogId}/${user.data.userId}`,
 
       blog,
       {
