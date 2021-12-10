@@ -55,3 +55,17 @@ export const getBlogById = (blogId) => {
     })
     .catch((err) => console.log(err));
 };
+
+export const getUserBlogs = async () => {
+  const user = await getToken();
+  return axios
+    .get(`${API}/blogs/${user.data.userId}`, {
+      headers: {
+        Authorization: `Bearer ${user.data.token}`
+      }
+    })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => console.log(err));
+};
