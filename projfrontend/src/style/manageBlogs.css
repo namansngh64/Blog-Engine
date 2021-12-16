@@ -46,3 +46,14 @@
 .blogBody {
   font-weight: 500;
 }
+.fade-scale {
+  transform: scale(0);
+  opacity: 0;
+  -webkit-transition: all 0.25s ease-in-out;
+  -o-transition: all 0.25s ease-in-out;
+  transition: all 0.25s ease-in-out;
+}
+.fade-scale.show {
+  opacity: 1;
+  transform: scale(1);
+}

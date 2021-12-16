@@ -69,3 +69,11 @@ export const getUserBlogs = async () => {
     })
     .catch((err) => console.log(err));
 };
+export const deleteBlogById = async (blogId) => {
+  const user = await getToken();
+  return axios.delete(`${API}/delete/blog/${blogId}/${user.data.userId}`, {
+    headers: {
+      Authorization: `Bearer ${user.data.token}`
+    }
+  });
+};
