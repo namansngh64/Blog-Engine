@@ -404,7 +404,7 @@ exports.deleteBlog = (req, res) => {
     return res.json({ error: "You are not authorized to delete this blog!" });
   }
 
-  Blog.findOneAndDelete({ id: req.blog._id }, (err, blog) => {
+  Blog.findOneAndDelete({ _id: req.blog._id }, (err, blog) => {
     if (err) {
       return res.json({ error: "Can't delete this blog!" });
     }

@@ -19,11 +19,13 @@ const ManageBlogs = (props) => {
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
-        pauseOnHover: true,
+        pauseOnHover: true, //hehe
         draggable: true,
         progress: undefined
       });
       message = undefined;
+      // history.replaceState("", nu);ygadjh
+      window.history.replaceState(null, ""); //TODO:Do this everywhere later
     }
   };
 
@@ -189,7 +191,7 @@ const ManageBlogs = (props) => {
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title">Modal title</h5>
+              <h5 className="modal-title">Do you want to delete this blog?</h5>
               <button
                 type="button"
                 className="btn-close"
@@ -198,7 +200,7 @@ const ManageBlogs = (props) => {
               ></button>
             </div>
             <div className="modal-body">
-              <p>Do you want to delete this blog?</p>
+              <p className="b">You can't undo this action!</p>
             </div>
             <div className="modal-footer">
               <button
