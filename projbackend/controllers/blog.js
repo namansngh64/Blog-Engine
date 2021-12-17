@@ -408,6 +408,15 @@ exports.deleteBlog = (req, res) => {
     if (err) {
       return res.json({ error: "Can't delete this blog!" });
     }
+    let remImgs = blog.images;
+    remImgs.map((img) => {
+      fs.stat(img, (err, stats) => {
+        if (err) {
+          return;
+        }
+        fs.unlinkSync(img);
+      });
+    });
     return res.json(blog);
   });
 };
