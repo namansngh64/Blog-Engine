@@ -1,0 +1,59 @@
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap");
+.heading {
+  text-align: center;
+  font-family: "Ubuntu", sans-serif;
+  font-size: 40px;
+}
+.blogWrapper {
+  border: 1px solid black;
+  border-radius: 10px;
+  margin: 20px 5px;
+  padding: 5px;
+  background-color: white;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  cursor: pointer;
+  transition: all ease-in-out 0.1s;
+}
+.blogWrapper:hover {
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+}
+.edit-btn {
+  margin: 2%;
+  width: 46%;
+  /* border: 1px solid yellow; */
+  border-radius: 100px;
+}
+.edit-btn:hover {
+  background-color: white;
+  color: #c49d03;
+  box-shadow: yellow 1px 1px 10px;
+}
+
+.delete-btn {
+  margin: 2%;
+  width: 46%;
+  border-radius: 100px;
+}
+.delete-btn:hover {
+  background-color: white;
+  color: red;
+  box-shadow: red 1px 1px 10px;
+}
+.blogHeading {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 30px;
+}
+.blogBody {
+  font-weight: 500;
+}
+.fade-scale {
+  transform: scale(0);
+  opacity: 0;
+  -webkit-transition: all 0.25s ease-in-out;
+  -o-transition: all 0.25s ease-in-out;
+  transition: all 0.25s ease-in-out;
+}
+.fade-scale.show {
+  opacity: 1;
+  transform: scale(1);
+}

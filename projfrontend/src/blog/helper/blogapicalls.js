@@ -4,8 +4,6 @@ import { getToken, getToken1 } from "../../auth/helper/authapicalls";
 
 export const createBlog = async (blog) => {
   const user = await getToken();
-  console.log(user.data.token);
-  console.log(blog);
   return axios
     .post(
       `${API}/create/blog/${user.data.userId}`,
@@ -69,6 +67,7 @@ export const getUserBlogs = async () => {
     })
     .catch((err) => console.log(err));
 };
+
 export const deleteBlogById = async (blogId) => {
   const user = await getToken();
   return axios.delete(`${API}/delete/blog/${blogId}/${user.data.userId}`, {
@@ -76,4 +75,13 @@ export const deleteBlogById = async (blogId) => {
       Authorization: `Bearer ${user.data.token}`
     }
   });
+};
+
+export const getAllBlogs = () => {
+  return axios
+    .get(`${API}/blogs`)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => console.log(err));
 };

@@ -24,8 +24,9 @@ const ManageBlogs = (props) => {
         progress: undefined
       });
       message = undefined;
+      props.location.message = undefined;
       // history.replaceState("", nu);ygadjh
-      window.history.replaceState(null, ""); //TODO:Do this everywhere later
+      // window.history.replaceState(null, ""); //TODO:Do this everywhere later
     }
   };
 

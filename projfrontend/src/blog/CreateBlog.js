@@ -178,7 +178,7 @@ const CreateBlog = () => {
 
     // formData.append("myFile", myFile);
 
-    createBlog(formData).then((data) => {
+    await createBlog(formData).then((data) => {
       // console.log(data);
       if (data.error) {
         toast.error(data.error, {
@@ -192,21 +192,21 @@ const CreateBlog = () => {
         });
         setValues({ ...values, error: data.error, loading: false });
       } else {
-        toast.success(data.message, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined
-        });
-        setValues({
-          ...values,
-          error: "",
-          success: true,
-          loading: false
-        });
+        // toast.success(data.message, {
+        //   position: "top-right",
+        //   autoClose: 5000,
+        //   hideProgressBar: false,
+        //   closeOnClick: true,
+        //   pauseOnHover: true,
+        //   draggable: true,
+        //   progress: undefined
+        // });
+        // setValues({
+        //   ...values,
+        //   error: "",
+        //   success: true,
+        //   loading: false
+        // });
         history.push({
           pathname: "/manage",
           message: "Blog Created Successfully"
