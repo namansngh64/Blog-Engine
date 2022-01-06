@@ -65,6 +65,7 @@ const Home = (props) => {
             </div>
             <div className="col-3">
               <img
+                className="img-fluid"
                 src={pic}
                 style={({ width: "150px" }, { height: "100px" })}
               />

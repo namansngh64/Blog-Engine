@@ -85,3 +85,32 @@ export const getAllBlogs = () => {
     })
     .catch((err) => console.log(err));
 };
+
+export const getBlogComments = (blogId) => {
+  return axios
+    .get(`${API}/comments/${blogId}`)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => console.log(err));
+};
+
+export const createComment = async (blogId, commentBody) => {
+  const user = await getToken();
+  return axios
+    .post(
+      `${API}/create/comment/${blogId}/${user.data.userId}`,
+
+      { commentBody },
+      {
+        headers: {
+          Authorization: `Bearer ${user.data.token}`
+        }
+        //   withCredentials: true
+      }
+    )
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => console.log(err));
+};
