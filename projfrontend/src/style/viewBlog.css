@@ -1,0 +1,8 @@
+.carousel-item {
+  transition: -webkit-transform 0.6s ease;
+  transition: transform 0.6s ease;
+  transition: transform 0.6s ease, -webkit-transform 0.6s ease;
+}
+.active {
+  box-shadow: none !important;
+}
