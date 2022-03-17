@@ -316,6 +316,7 @@ const ViewBlog = ({ match }) => {
           </button>
         </center>
       )}
+
       {token !== undefined && addComment()}
       {comments.length <= 0 && (
         <center>
