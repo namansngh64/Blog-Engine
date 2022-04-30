@@ -59,8 +59,8 @@ const ManageBlogs = (props) => {
             <div className="col-9">
               <div className="blogHeading">{title}</div>
               <div className="blogBody">
-                {blogBody.substring(0, 150)}
-                {blogBody.length > 150 ? "..." : ""}
+                {blogBody.substring(0, 250)}
+                {blogBody.length > 250 ? "..." : ""}
               </div>
             </div>
             <div className="col-3">
@@ -91,8 +91,8 @@ const ManageBlogs = (props) => {
           <div className="row">
             <div className="blogHeading">{title}</div>
             <div className="blogBody">
-              {blogBody.substring(0, 20)}
-              {blogBody.length > 150 ? "..." : ""}
+              {blogBody.substring(0, 250)}
+              {blogBody.length > 250 ? "..." : ""}
             </div>
             <button
               onClick={(e) => {
