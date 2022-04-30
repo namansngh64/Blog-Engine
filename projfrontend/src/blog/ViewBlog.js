@@ -171,7 +171,7 @@ const ViewBlog = ({ match }) => {
                 paddingLeft: "10px"
               }}
             >
-              {ctime}
+              {ctime.substring(0, 10) + " " + ctime.substring(11, 16) + " GMT"}
             </small>
           </div>
         </div>
