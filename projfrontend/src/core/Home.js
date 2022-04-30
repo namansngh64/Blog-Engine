@@ -9,6 +9,7 @@ const Home = (props) => {
   let history = useHistory();
 
   const [blogs, setBlogs] = useState([]);
+  const [filter, setFilter] = useState("");
 
   const message = () => {
     var message = (props.location && props.location.message) || undefined;
@@ -46,31 +47,61 @@ const Home = (props) => {
 
   const blogCard = (title, blogBody, pic, blogId, key) => {
     return (
-      // <>
       <div
-        className="blogWrapper"
+        className="col-6"
         key={key}
         onClick={() => {
           blogClick(blogId);
         }}
+        style={{ marginBottom: "10px", marginTop: "10px" }}
       >
-        {pic ? (
-          <div className="row">
-            <div className="col-9">
+        <div className="blogWrapper1">
+          {pic ? (
+            // <div className="row">
+            //   <div className="col-9">
+            //     <div className="blogHeading">{title}</div>
+            //     <div className="blogBody">
+            //       {blogBody.substring(0, 250)}
+            //       {blogBody.length > 250 ? "..." : ""}
+            //     </div>
+            //   </div>
+            //   <div className="col-3">
+            //     <img
+            //       className="img-fluid"
+            //       src={pic}
+            //       style={({ width: "150px" }, { height: "100px" })}
+            //     />
+            //   </div>
+            // </div>
+            // <div className="col-3">
+            <div className="row">
+              {/* <div className="col-9"> */}
+              <img
+                className="img-fluid"
+                src={pic}
+                // style={{ objectFit: "fill" }}
+                style={{ height: "200px" }}
+              />
+              <div className="blogHeading">{title}</div>
+
+              <div className="blogBody">
+                {blogBody.substring(0, 250)}
+                {blogBody.length > 250 ? "..." : ""}
+              </div>
+              {/* </div> */}
+              {/* <div className="col-3"> */}
+
+              {/* </div> */}
+            </div>
+          ) : (
+            // </div>
+            <div className="row">
               <div className="blogHeading">{title}</div>
               <div className="blogBody">
                 {blogBody.substring(0, 250)}
                 {blogBody.length > 250 ? "..." : ""}
               </div>
-            </div>
-            <div className="col-3">
-              <img
-                className="img-fluid"
-                src={pic}
-                style={({ width: "150px" }, { height: "100px" })}
-              />
-            </div>
-            {/* <button
+              {/* <button
               onClick={(e) => {
                 e.stopPropagation();
                 history.push(`/edit/blog/${blogId}`);
@@ -87,33 +118,9 @@ const Home = (props) => {
             >
               Delete
             </button> */}
-          </div>
-        ) : (
-          <div className="row">
-            <div className="blogHeading">{title}</div>
-            <div className="blogBody">
-              {blogBody.substring(0, 250)}
-              {blogBody.length > 250 ? "..." : ""}
             </div>
-            {/* <button
-              onClick={(e) => {
-                e.stopPropagation();
-                history.push(`/edit/blog/${blogId}`);
-              }}
-              className="btn btn-warning edit-btn"
-            >
-              Edit
-            </button>
-            <button
-              onClick={(e) => {
-                confirmDelete(e, blogId, key);
-              }}
-              className="btn btn-danger delete-btn"
-            >
-              Delete
-            </button> */}
-          </div>
-        )}
+          )}
+        </div>
       </div>
     );
   };
@@ -124,19 +131,22 @@ const Home = (props) => {
 
   const allblogs = () => {
     let content = (
-      <>
-        {blogs.map((blog, key) =>
-          blogCard(
-            blog.title,
-            blog.blogBody,
-            blog.images.length
-              ? window.location.origin + blog.images[0].substring(22)
-              : 0,
-            blog._id,
-            key
-          )
+      <div className="row">
+        {blogs.map(
+          (blog, key) =>
+            (blog.title.toLowerCase().includes(filter.toLowerCase()) ||
+              blog.blogBody.toLowerCase().includes(filter.toLowerCase())) &&
+            blogCard(
+              blog.title,
+              blog.blogBody,
+              blog.images.length
+                ? window.location.origin + blog.images[0].substring(22)
+                : window.location.origin + "/images/static.jpg",
+              blog._id,
+              key
+            )
         )}
-      </>
+      </div>
     );
     return content;
   };
@@ -154,10 +164,12 @@ const Home = (props) => {
               type="search"
               placeholder="Search"
               aria-label="Search"
+              value={filter}
+              onChange={filterChange}
             />
-            <button className="btn btn-info" type="submit">
+            {/* <button className="btn btn-info" type="submit">
               Search
-            </button>
+            </button> */}
           </form>
           <ui className="navbar-nav">
             <li className="nav-item m-1">
@@ -231,11 +243,14 @@ const Home = (props) => {
     );
   };
 
+  const filterChange = (event) => {
+    setFilter(event.target.value);
+  };
+
   return (
     <Base>
       {message()}
       {filterBar()}
-
       {allblogs()}
     </Base>
   );

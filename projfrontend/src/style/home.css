@@ -4,17 +4,21 @@
   font-family: "Ubuntu", sans-serif;
   font-size: 40px;
 }
-.blogWrapper {
+.blogWrapper1 {
   border: 1px solid black;
   border-radius: 10px;
-  margin: 20px 5px;
+  /* max-width: 50%; */
+  width: 90%;
+  height: 100%;
+  /* margin: 50px 0px; */
+  /* margin: 20px 5px; */
   padding: 5px;
   background-color: white;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   cursor: pointer;
   transition: all ease-in-out 0.1s;
 }
-.blogWrapper:hover {
+.blogWrapper1:hover {
   box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
 }
 .edit-btn {
