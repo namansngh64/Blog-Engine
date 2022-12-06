@@ -1,6 +1,6 @@
 # Blog-Engine
 
-This is a Web App where a registered user can create, edit, delete and comment.
+This is a Web App where a registered user can create, edit, delete and comment on blogs.
 
 Not registered users can only read the blogs posted.
 
